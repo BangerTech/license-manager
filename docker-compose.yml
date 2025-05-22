@@ -1,0 +1,60 @@
+version: '3.8'
+
+services:
+  backend:
+    build: ./backend
+    ports:
+      - "${BACKEND_PORT:-4000}:4000"
+    env_file:
+      - .env # Explicitly load .env file for this service
+    environment:
+      - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@database:5432/${POSTGRES_DB}
+      - JWT_SECRET=${JWT_SECRET}
+      - ADMIN_USERNAME=${ADMIN_USERNAME}
+      - ADMIN_PASSWORD=${ADMIN_PASSWORD}
+      - NODE_ENV=${NODE_ENV:-development}
+    volumes:
+      - ./backend:/usr/src/app
+      - /usr/src/app/node_modules # Prevent local node_modules from overwriting container's
+    depends_on:
+      database:
+        condition: service_healthy
+    restart: unless-stopped
+
+  frontend:
+    build: 
+      context: ./frontend
+      args:
+        REACT_APP_API_URL: ${REACT_APP_API_URL:-http://backend:4000/api}
+    ports:
+      - "${FRONTEND_PORT:-3000}:80"
+    volumes:
+      - ./frontend/src:/app/src # Mount only src for faster hot-reloading
+      # For create-react-app, if you want to mount the entire frontend directory for easier Dockerfile changes without rebuilding:
+      # - ./frontend:/app 
+      # - /app/node_modules
+    depends_on:
+      - backend
+    environment:
+      - REACT_APP_API_URL=${REACT_APP_API_URL:-http://backend:4000/api} # Using service name 'backend' for inter-container communication
+      - NODE_ENV=${NODE_ENV:-development}
+    restart: unless-stopped
+
+  database:
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER:-admin}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-password}
+      - POSTGRES_DB=${POSTGRES_DB:-license_manager_db}
+    ports:
+      - "${DB_PORT:-5432}:5432"
+    volumes:
+      - ./data/db:/var/lib/postgresql/data # Data stored locally in ./data/db
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-admin} -d ${POSTGRES_DB:-license_manager_db}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+# Named volume 'license_manager_db_data' is no longer needed as we are using a bind mount. 

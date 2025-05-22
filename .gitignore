@@ -1,0 +1,33 @@
+# Node.js / React
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Create React App
+build/
+.DS_Store
+coverage/
+
+# Environment variables
+.env
+.env*.local
+
+# Docker
+**/data/db/*
+!**/data/db/.gitkeep # If you want to keep the directory structure
+
+# IDE / Editor specific
+.vscode/
+.idea/
+
+# Operating System files
+.DS_Store
+Thumbs.db
+
+# Logs
+logs
+*.log
+
+# Temporary files
+*.tmp
+*.swp 

@@ -1,0 +1,587 @@
+/* frontend/src/App.css */
+
+/* Remove .App and .App-link if not used directly elsewhere, or simplify */
+.App {
+  /* Potentially remove or simplify if App.js doesn't use it directly for layout */
+}
+
+/* Login Page Specific Styles */
+.Login-page-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  width: 100%;
+  background-color: var(--bg-secondary); /* Consistent page background */
+  padding: 20px;
+}
+
+.Login-form-wrapper {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  padding: 40px 50px;
+  border-radius: var(--radius-large);
+  box-shadow: var(--shadow-strong);
+  width: 100%;
+  max-width: 420px;
+  display: flex;
+  flex-direction: column;
+}
+
+.Login-form-wrapper h1 {
+  color: var(--text-primary);
+  margin-bottom: 30px;
+  font-size: 28px;
+  font-weight: 600;
+  text-align: center;
+}
+
+/* Input and button styles are now more reliant on global styles in index.css */
+/* We can add specific overrides here if needed */
+.Login-form-wrapper input[type="text"],
+.Login-form-wrapper input[type="password"] {
+  margin-bottom: 20px; /* Increased spacing */
+  /* Specific login input styling if different from global */
+}
+
+.Login-form-wrapper button[type="submit"] {
+  background-color: var(--btn-primary-bg);
+  color: var(--btn-primary-text);
+  padding: 12px 20px;
+  font-size: 16px;
+  width: 100%;
+}
+
+.Login-form-wrapper button[type="submit"]:hover {
+  background-color: var(--btn-primary-hover-bg);
+}
+
+.Login-form-wrapper button:disabled {
+  background-color: var(--btn-secondary-bg);
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.Error-message-login {
+  color: var(--status-high-priority-bg); /* Using a status color for error text */
+  background-color: rgba(255, 102, 128, 0.1); /* Lighter bg for the error */
+  border: 1px solid var(--status-high-priority-bg);
+  padding: 12px;
+  border-radius: var(--radius-medium);
+  margin-bottom: 20px;
+  text-align: center;
+  font-size: 14px;
+}
+
+/* New Dashboard Layout System */
+.App-shell {
+  display: flex;
+  flex-direction: column; /* Changed from row as Top-bar is gone, sidebar and main are primary row items */
+  height: 100vh;
+  background-color: var(--bg-page); /* App-shell should also use the page background now */
+  color: var(--text-primary);
+}
+
+/* Top Bar Styles */
+.Top-bar {
+  height: 64px; /* Adjusted height */
+  background-color: var(--bg-primary);
+  border-bottom: 1px solid var(--border-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Distribute items */
+  padding: 0 24px; /* Adjusted padding */
+  color: var(--text-primary);
+  position: sticky; /* Keep top bar visible if main App-shell scrolls (though overflow is hidden now) */
+  top: 0;
+  z-index: 1000;
+}
+
+.Top-bar-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 15px;
+}
+
+.Breadcrumb-base {
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+.Breadcrumb-base:hover {
+  color: var(--text-accent);
+}
+.Breadcrumb-separator {
+  color: var(--text-secondary);
+}
+.Breadcrumb-current {
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.Top-bar-center {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center; /* Center the search bar area */
+  padding: 0 40px; /* Give it some space from left/right groups */
+}
+
+.Search-bar-placeholder {
+  display: flex;
+  align-items: center;
+  background-color: var(--bg-accent);
+  padding: 8px 12px;
+  border-radius: var(--radius-medium);
+  width: 100%;
+  max-width: 480px; /* Max width for search bar */
+}
+
+.Search-bar-placeholder svg {
+  color: var(--text-secondary);
+  margin-right: 8px;
+}
+
+.Search-bar-placeholder input {
+  background-color: transparent;
+  border: none;
+  color: var(--text-primary);
+  font-size: 15px;
+  width: 100%;
+}
+.Search-bar-placeholder input:focus {
+  box-shadow: none; /* Remove focus ring inside search bar */
+}
+.Search-bar-placeholder input::placeholder {
+  color: var(--text-secondary);
+}
+
+.Top-bar-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.Top-bar-action-button {
+  /* Using global button styles from index.css as a base */
+  padding: 8px 16px; /* Slightly smaller padding for top bar buttons */
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.Top-bar-action-button.primary-button {
+  background-color: var(--btn-primary-bg);
+  color: var(--btn-primary-text);
+}
+.Top-bar-action-button.primary-button:hover {
+  background-color: var(--btn-primary-hover-bg);
+}
+
+.Top-bar-action-button.secondary-button {
+  background-color: var(--btn-secondary-bg);
+  color: var(--btn-secondary-text);
+}
+.Top-bar-action-button.secondary-button:hover {
+  background-color: var(--btn-secondary-hover-bg);
+}
+
+.Top-bar-icon-button {
+  background-color: transparent;
+  color: var(--text-secondary);
+  padding: 6px; /* Small padding for icon-only buttons */
+  border-radius: var(--radius-full); /* Make it circular */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.Top-bar-icon-button:hover {
+  background-color: var(--bg-accent);
+  color: var(--text-primary);
+}
+
+.Layout-body {
+  display: flex;
+  flex-grow: 1;
+  overflow: hidden; /* Prevent double scrollbars if content overflows */
+  padding: 20px; /* Add padding HERE to create inset effect for sidebar and main content */
+  gap: 20px; /* Maintain gap between sidebar and main content */
+}
+
+.Main-content-area {
+  flex-grow: 1;
+  padding: 0px; /* Initial padding removed, header will add its own */
+  overflow-y: auto; /* Allow content to scroll */
+  display: flex;
+  flex-direction: column; /* So header and content stack vertically */
+}
+
+/* Ensure Content-card within MainContentArea (like DashboardOverview) has its own padding */
+.Main-content-area > .Content-card {
+  padding: 20px 25px;
+  margin: 0 25px 25px 25px; /* Add some margin around the main content cards */
+}
+
+/* If ProjectForm is directly in MainContentArea, it might need consistent padding/margin too */
+.Main-content-area > .Form-container {
+    padding: 20px 25px;
+    margin: 0 25px 25px 25px; 
+}
+
+.Floating-sidebar {
+  width: 88px; /* Slightly wider for better spacing of larger top icon */
+  min-width: 88px;
+  background-color: var(--sidebar-bg);
+  color: var(--sidebar-text-color);
+  padding: 20px 0; 
+  border-radius: var(--radius-xlarge);
+  box-shadow: var(--shadow-medium);
+  display: flex;
+  flex-direction: column;
+  align-items: center; 
+  transition: var(--transition-medium);
+  height: calc(100vh - 40px - 64px); /* Adjusted for new Top-bar height */
+}
+
+.Sidebar-top-actions {
+  margin-bottom: 20px; /* Space below user profile icon */
+}
+
+.User-profile-icon {
+  width: 56px !important; /* Make profile icon larger */
+  height: 56px !important;
+  background-color: var(--bg-accent); /* Placeholder background */
+  /* In a real app, this would be an <img> tag or a div with background-image */
+}
+.User-profile-icon:hover {
+   background-color: var(--text-accent) !important; /* Different hover for emphasis */
+   color: var(--text-on-accent) !important;
+}
+.User-profile-icon.active { /* If profile page is active */
+    box-shadow: 0 0 0 2px var(--text-accent); 
+}
+
+.Floating-sidebar nav ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column; /* Stack icons vertically */
+  align-items: center; /* Ensure all li content is centered */
+  gap: 4px; /* Space between nav items */
+}
+
+.Floating-sidebar nav li {
+  display: flex; /* Already flex from parent, but good for clarity */
+  justify-content: center; 
+  width: 100%; /* Make li take full width for centering icon button */
+}
+
+.Floating-sidebar .Sidebar-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px; /* Slightly larger touch target */
+  height: 52px;
+  border-radius: var(--radius-large); /* More rounded like image */
+  color: var(--sidebar-icon-color);
+  background-color: transparent;
+  transition: var(--transition-fast);
+  cursor: pointer;
+  margin: 0 auto; /* Center the button if li is wider */
+}
+
+.Floating-sidebar .Sidebar-icon:hover {
+  background-color: var(--bg-accent);
+  color: var(--text-accent);
+}
+
+.Floating-sidebar .Sidebar-icon.active {
+  background-color: var(--sidebar-icon-active-bg);
+  color: var(--sidebar-icon-active-color);
+}
+
+.Floating-sidebar .Sidebar-icon svg {
+  width: 24px; 
+  height: 24px;
+}
+
+.Floating-sidebar .Sidebar-bottom-actions {
+  margin-top: auto; 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px; /* Reduced gap for bottom actions */
+  padding-bottom: 0; /* Remove bottom padding to align with icon hover areas */
+  width: 100%; /* Ensure it spans width for centering */
+}
+
+/* Adjust li within bottom actions if it contains buttons */
+.Floating-sidebar .Sidebar-bottom-actions li {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+/* Styles for ProjectDetails and ProjectForm (Main Content) */
+.Content-card {
+  background-color: var(--bg-content); /* This might be same as --bg-primary in dark theme */
+  color: var(--text-primary);
+  padding: 25px;
+  border-radius: var(--radius-large); /* Consistent with new radii */
+  box-shadow: var(--shadow-soft);
+  margin-bottom: 20px; /* Spacing between cards if multiple are shown */
+}
+
+.Content-card h2 {
+  margin-top: 0;
+  color: var(--text-primary);
+  border-bottom: 1px solid var(--border-primary);
+  padding-bottom: 15px;
+  margin-bottom: 25px;
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.Content-card p {
+  margin: 12px 0;
+  line-height: 1.7;
+  color: var(--text-secondary);
+}
+
+.Content-card strong {
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+/* Status Buttons (in ProjectDetails) */
+.Status-buttons-container {
+  margin-top: 25px;
+  display: flex;
+  gap: 10px;
+}
+
+.Status-buttons-container button {
+  /* General button styles from index.css will apply */
+  /* Specific status colors */
+  padding: 8px 12px;
+  font-size: 14px;
+}
+
+/* Example, these specific status colors need to be tied to CSS vars or logic */
+.Status-buttons-container button.not-paid {
+  background-color: var(--status-design-bg); /* Example: using design status color */
+  color: var(--status-design-text);
+}
+.Status-buttons-container button.partially-paid {
+  background-color: var(--status-frontend-bg); /* Example: using frontend status color */
+  color: var(--status-frontend-text);
+}
+.Status-buttons-container button.fully-paid {
+  background-color: var(--status-low-priority-bg); /* Example: using low priority status color */
+  color: var(--status-low-priority-text);
+}
+
+.Status-buttons-container button.current-status {
+  box-shadow: 0 0 0 2px var(--text-accent); /* Highlight current status */
+  font-weight: 600;
+}
+
+/* Form Styling (ProjectForm) */
+.Form-container label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: var(--text-primary);
+  font-size: 14px;
+}
+
+.Form-container input[type="text"],
+.Form-container input[type="url"],
+.Form-container textarea,
+.Form-container select {
+  width: 100%;
+  margin-bottom: 20px;
+  /* Styles inherited from index.css, overrides if needed */
+}
+
+.Form-container textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+.Form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 25px;
+}
+
+.Form-actions button[type="submit"] {
+  background-color: var(--btn-primary-bg);
+  color: var(--btn-primary-text);
+}
+.Form-actions button[type="submit"]:hover {
+  background-color: var(--btn-primary-hover-bg);
+}
+
+.Form-actions button.cancel-button {
+  background-color: var(--btn-secondary-bg);
+  color: var(--btn-secondary-text);
+}
+.Form-actions button.cancel-button:hover {
+  background-color: var(--btn-secondary-hover-bg);
+}
+
+.Form-actions button.delete-button {
+  background-color: var(--status-high-priority-bg); /* Using a status color for delete */
+  color: var(--status-high-priority-text);
+  margin-right: auto; /* Pushes delete to the left */
+}
+.Form-actions button.delete-button:hover {
+  opacity: 0.85;
+}
+
+/* General Error Message (can be used in ProjectDetails, ProjectForm) */
+.Error-message-general {
+  color: var(--status-high-priority-bg);
+  background-color: rgba(255, 102, 128, 0.1);
+  border: 1px solid var(--status-high-priority-bg);
+  padding: 12px;
+  border-radius: var(--radius-medium);
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+}
+
+/* Add Project Button in Sidebar (if still styled as a large button) */
+/* This will likely become an icon button */
+.Add-project-icon-button {
+    /* Style as an icon button, similar to .Sidebar-icon */
+    width: 48px;
+    height: 48px;
+    border-radius: var(--radius-medium);
+    background-color: var(--btn-primary-bg);
+    color: var(--btn-primary-text);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.Add-project-icon-button:hover {
+    background-color: var(--btn-primary-hover-bg);
+}
+
+/* Remove old classes if no longer used by components after refactor */
+/* e.g., .Project-details-container, .Project-form-container might merge into .Content-card */
+/* .Add-project-button, .Logout-button, .Theme-toggler will need specific new styles for the icon sidebar */
+
+/* Placeholder for new Dashboard View specific styles */
+.Dashboard-overview-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.Dashboard-project-card {
+  background-color: var(--bg-content); /* or --bg-accent for a bit of contrast */
+  padding: 20px;
+  border-radius: var(--radius-large);
+  box-shadow: var(--shadow-soft);
+}
+
+.Dashboard-project-card h3 {
+  color: var(--text-primary);
+  margin-top: 0;
+  margin-bottom: 10px;
+  font-size: 18px;
+}
+
+.Dashboard-project-card p {
+  color: var(--text-secondary);
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+
+/* New Styles for Main Content Header (replaces Top-bar) */
+.Main-content-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 25px; /* Adjust padding as needed */
+  /* border-bottom: 1px solid var(--border-color); Optional: if a separator is needed */
+  margin-bottom: 20px; /* Space below the header */
+}
+
+.Main-content-header-left {
+  display: flex;
+  flex-direction: column;
+  gap: 4px; /* Small gap between breadcrumbs and title */
+}
+
+.Main-content-header-left .Breadcrumbs {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+.Main-content-header-left .Breadcrumb-base,
+.Main-content-header-left .Breadcrumb-separator,
+.Main-content-header-left .Breadcrumb-current {
+  display: inline-block;
+}
+
+.Main-content-header-left .Breadcrumb-base:hover {
+  color: var(--text-accent);
+  text-decoration: underline;
+}
+
+.Main-content-header-left .Breadcrumb-separator {
+  margin: 0 6px;
+}
+
+.Main-content-header-left h1 {
+  margin: 0;
+  font-size: 1.75rem; /* Larger page title */
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.Main-content-header-right {
+  display: flex;
+  align-items: center;
+  gap: 15px; /* Gap between search and potential future icons */
+}
+
+/* Search bar styled like the reference image */
+.app-style-search {
+  display: flex;
+  align-items: center;
+  background-color: var(--bg-input); /* Slightly different from main content cards */
+  border-radius: var(--radius-medium);
+  padding: 8px 12px;
+  width: 280px; /* Adjust width as needed */
+  border: 1px solid var(--border-color-input);
+  box-shadow: 0 1px 3px 0 rgba(0,0,0,0.07), 0 1px 2px 0 rgba(0,0,0,0.03); /* Subtle shadow */
+}
+
+.app-style-search svg {
+  color: var(--text-secondary);
+  margin-right: 8px;
+}
+
+.app-style-search input[type="text"] {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--text-primary);
+  font-size: 0.9rem;
+  width: 100%;
+}
+
+.app-style-search input[type="text"]::placeholder {
+  color: var(--text-tertiary);
+} 
