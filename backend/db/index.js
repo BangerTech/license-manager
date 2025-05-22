@@ -32,7 +32,7 @@ const initializeDatabase = async () => {
         project_name VARCHAR(255) NOT NULL UNIQUE,
         project_identifier VARCHAR(255) NOT NULL UNIQUE,
         client_ip_address VARCHAR(255),
-        license_status VARCHAR(50) NOT NULL DEFAULT 'NOT_PAID' CHECK (license_status IN ('NOT_PAID', 'PARTIALLY_PAID', 'FULLY_PAID')),
+        license_status VARCHAR(50) NOT NULL DEFAULT 'FULLY_PAID' CHECK (license_status IN ('NOT_PAID', 'PARTIALLY_PAID', 'FULLY_PAID')),
         created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
         notes TEXT

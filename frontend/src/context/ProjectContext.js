@@ -118,6 +118,8 @@ export const ProjectProvider = ({ children }) => {
       console.error("Error updating project status:", err);
       setError(err.message || 'Failed to update project status.');
       throw err; // Re-throw for component to handle
+    } finally {
+      setLoading(false); // Ensure loading is reset
     }
   };
 

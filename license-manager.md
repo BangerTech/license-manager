@@ -281,6 +281,12 @@ All notification endpoints require JWT Bearer token authentication.
     *   Content presentation uses `.Content-card` for a consistent look and feel.
     *   Forms (`.Form-container`) and buttons (`.Form-actions`) are styled for clarity and modern aesthetics.
 
+*   **Project Details View - Button Layout:**
+    *   In the project details view, the action buttons (Set Status: "Not Paid", "Partially Paid", "Fully Paid", and "Edit Project") are grouped together at the bottom of the content card.
+    *   These buttons are displayed in a row, separated by a horizontal line from the main project information.
+    *   They have a consistent style with icons and text, and provide clear visual feedback for hover and active (current status) states.
+    *   The "Edit Project" button is styled as a secondary action to differentiate it from the status-changing buttons.
+
 ## 8. Client Application Integration Logic
 
 Client applications need to implement logic to communicate with the License Manager.
