@@ -110,12 +110,24 @@ const initializeDatabase = async () => {
         details JSONB, -- For storing additional structured data, like old/new values
         is_read BOOLEAN DEFAULT FALSE,
         created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
         CONSTRAINT fk_project FOREIGN KEY(project_id) REFERENCES projects(id) ON DELETE SET NULL,
         CONSTRAINT fk_admin FOREIGN KEY(admin_id) REFERENCES admins(id) ON DELETE SET NULL
       );
     `;
     await client.query(createNotificationsTableQuery);
     console.log('Table "notifications" checked/created successfully.');
+
+    // Add trigger for updated_at on notifications table
+    const createNotificationsTriggerQuery = `
+      DROP TRIGGER IF EXISTS set_timestamp_notifications ON notifications;
+      CREATE TRIGGER set_timestamp_notifications
+      BEFORE UPDATE ON notifications
+      FOR EACH ROW
+      EXECUTE PROCEDURE trigger_set_timestamp();
+    `;
+    await client.query(createNotificationsTriggerQuery);
+    console.log('Trigger "set_timestamp_notifications" for "notifications" table checked/created successfully.');
 
     client.release();
   } catch (err) {
