@@ -3,6 +3,7 @@ import React, { useState, useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import { AlertTriangle } from 'react-feather'; // For error message icon
 import '../App.css'; // Assuming App.css has the login form styles
+import logo from '../assets/logo.png'; // Import the logo
 
 const Login = () => {
   const [username, setUsername] = useState('');
@@ -29,8 +30,9 @@ const Login = () => {
 
   return (
     <div className="Login-page-container">
-      <div className="Login-form-wrapper">
-        <h1>Admin Login</h1>
+      <div className="Login-form-container">
+        <img src={logo} alt="BangerTECH Logo" style={{ width: '100px', marginBottom: '20px' }} />
+        <h1>Login</h1>
         {authError && (
           <p className="Error-message-login">
             <AlertTriangle size={18} style={{ marginRight: '8px' }} />

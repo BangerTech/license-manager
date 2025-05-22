@@ -1,5 +1,6 @@
 const { Pool } = require('pg');
 require('dotenv').config({ path: '../.env' }); // Ensure .env from project root is loaded
+const bcrypt = require('bcryptjs');
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
@@ -64,6 +65,54 @@ const initializeDatabase = async () => {
     `;
     await client.query(createTriggerQuery);
     console.log('Trigger "set_timestamp" for "projects" table checked/created successfully.');
+
+    // Create admins table
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS admins (
+        id SERIAL PRIMARY KEY,
+        username VARCHAR(255) NOT NULL UNIQUE,
+        password_hash VARCHAR(255) NOT NULL,
+        created_at TIMESTAMPTZ DEFAULT NOW(),
+        updated_at TIMESTAMPTZ DEFAULT NOW()
+      );
+    `);
+    console.log('Table "admins" initialized.');
+
+    // Check if default admin needs to be created
+    const adminRes = await client.query('SELECT COUNT(*) FROM admins');
+    if (parseInt(adminRes.rows[0].count, 10) === 0) {
+      const adminUsername = process.env.ADMIN_USERNAME;
+      const adminPassword = process.env.ADMIN_PASSWORD;
+      if (adminUsername && adminPassword) {
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(adminPassword, salt);
+        await client.query(
+          'INSERT INTO admins (username, password_hash) VALUES ($1, $2)',
+          [adminUsername, hashedPassword]
+        );
+        console.log(`Default admin user "${adminUsername}" created.`);
+      } else {
+        console.error('ADMIN_USERNAME or ADMIN_PASSWORD environment variables are not set. Cannot create default admin.');
+      }
+    }
+
+    // Create notifications table
+    const createNotificationsTableQuery = `
+      CREATE TABLE IF NOT EXISTS notifications (
+        id SERIAL PRIMARY KEY,
+        event_type VARCHAR(100) NOT NULL, -- e.g., 'PROJECT_CREATED', 'STATUS_UPDATED', 'ADMIN_LOGIN_SUCCESS', 'ADMIN_PASSWORD_CHANGED'
+        message TEXT NOT NULL,
+        project_id UUID,
+        admin_id INTEGER,
+        details JSONB, -- For storing additional structured data, like old/new values
+        is_read BOOLEAN DEFAULT FALSE,
+        created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+        CONSTRAINT fk_project FOREIGN KEY(project_id) REFERENCES projects(id) ON DELETE SET NULL,
+        CONSTRAINT fk_admin FOREIGN KEY(admin_id) REFERENCES admins(id) ON DELETE SET NULL
+      );
+    `;
+    await client.query(createNotificationsTableQuery);
+    console.log('Table "notifications" checked/created successfully.');
 
     client.release();
   } catch (err) {

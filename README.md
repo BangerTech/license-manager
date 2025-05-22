@@ -20,8 +20,12 @@ Client applications are expected to contact the License Manager periodically (e.
 *   **Project Management**: CRUD operations for client projects.
 *   **License Status Control**: Easily update the license status for each project.
 *   **Client API**: A simple GET endpoint for client applications to check their status.
-*   **JWT Authentication**: Secure a_x_dmin actions.
+*   **JWT Authentication**: Secure admin actions.
+*   **Admin Password Management**: Securely change admin passwords via the settings page. Admin credentials from `.env` are used for initial setup if no admin exists.
+*   **Notification System**: View important system and application events (e.g., project changes, logins, password updates) on a dedicated notifications page.
 *   **Dockerized**: Easy to deploy using Docker Compose.
+
+For more detailed information on the database schema and all API endpoints, please refer to `license-manager.md`.
 
 ## Technology Stack
 
@@ -38,8 +42,8 @@ license-manager/
 ├── backend/                 # Node.js Express backend application
 │   ├── db/                  # Database connection and initialization
 │   ├── middleware/          # Authentication middleware
-│   ├── models/              # (If using more complex data models)
-│   ├── routes/              # API routes
+│   ├── routes/              # API routes (projects.js, license.js, auth.js, notifications.js)
+│   ├── services/            # Business logic services (e.g., notificationService.js)
 │   ├── Dockerfile
 │   ├── server.js
 │   └── package.json
@@ -47,8 +51,8 @@ license-manager/
 │   ├── public/
 │   ├── src/
 │   │   ├── assets/
-│   │   ├── components/
-│   │   ├── context/
+│   │   ├── components/      # React components (Login.js, ProjectList.js, SettingsPage.js, NotificationsPage.js etc.)
+│   │   ├── contexts/
 │   │   ├── services/        # API service
 │   │   ├── App.js
 │   │   ├── index.js
@@ -61,7 +65,7 @@ license-manager/
 ├── .env.example             # Example environment variables (rename to .env and fill in)
 ├── .gitignore
 ├── docker-compose.yml
-├── license-manager.md       # Detailed project documentation (internal)
+├── license-manager.md       # Detailed project documentation (database schema, all API endpoints, etc.)
 └── README.md                # This file
 ```
 
@@ -107,7 +111,8 @@ license-manager/
     *   **Backend API (if direct access is needed)**: `http://localhost:4000` (or the `BACKEND_PORT` you set in `.env`)
 
 7.  **Default Admin Credentials**:
-    *   Use the `ADMIN_USERNAME` and `ADMIN_PASSWORD` you configured in your `.env` file to log in.
+    *   Use the `ADMIN_USERNAME` and `ADMIN_PASSWORD` you configured in your `.env` file to log in for the first time (if no admin user exists in the database).
+    *   It is highly recommended to change the default password immediately after the first login using the "Settings" page.
 
 8.  **Stopping the Application**:
     ```bash
@@ -134,10 +139,11 @@ Client applications should make a GET request to:
 
 ## Further Development
 
-*   Refine UI/UX elements.
-*   Implement placeholder functionalities (notifications, detailed settings).
-*   Enhance error handling and user feedback.
-*   Consider adding more robust security measures for production environments.
+*   Refine UI/UX elements further.
+*   Implement a Notification Context to display unread notification counts in the sidebar.
+*   Enhance error handling and user feedback across the application.
+*   Consider adding more robust security measures for production environments (e.g., rate limiting, advanced logging).
+*   Explore role-based access control (RBAC) for different admin levels.
 
 ## Contributing
 

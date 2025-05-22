@@ -1,135 +1,61 @@
 /* frontend/src/index.css */
-:root {
-  /* New Font Stack (Apple-inspired) */
+:root { /* For global, non-theme-specific variables */
   --font-primary: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif;
   --font-monospace: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
 
-  /* Radii - for consistency */
   --radius-small: 4px;
   --radius-medium: 8px;
   --radius-large: 12px;
   --radius-xlarge: 16px;
   --radius-full: 9999px;
 
-  /* Transitions */
   --transition-fast: all 0.15s ease-out;
   --transition-medium: all 0.25s ease-out;
-
-  /* Light Theme (Re-evaluating based on the image, which is mostly dark/purple-ish) */
-  /* For now, let's refine the dark theme first and then create a contrasting light theme */
-  --bg-primary-light: #ffffff;
-  --bg-secondary-light: #f7f7f7; /* Slightly off-white for page background */
-  --bg-sidebar-light: #f0f0f0; /* Light grey for sidebar */
-  --bg-content-light: #ffffff; /* Content cards */
-  --bg-accent-light: #ededed; /* Subtle accents, hover states */
-  --bg-overlay-light: rgba(255, 255, 255, 0.8); /* For "frosted glass" if used */
-
-  --text-primary-light: #1d1d1f; /* Apple's nearly black */
-  --text-secondary-light: #58585c; /* Lighter grey for secondary text */
-  --text-accent-light: #007aff; /* Apple Blue */
-  --text-on-accent-light: #ffffff;
-
-  --border-primary-light: #d2d2d7; /* Subtle borders */
-  --border-secondary-light: #e5e5e5;
-
-  --shadow-soft-light: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.12);
-  --shadow-medium-light: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  --shadow-strong-light: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-
-  /* Initial button colors for light theme */
-  --btn-primary-bg-light: var(--text-accent-light);
-  --btn-primary-text-light: var(--text-on-accent-light);
-  --btn-primary-hover-bg-light: #005ecb;
-
-  --btn-secondary-bg-light: #e9e9eb;
-  --btn-secondary-text-light: var(--text-primary-light);
-  --btn-secondary-hover-bg-light: #dcdce0;
 }
 
-.dark-theme {
-  --bg-primary: #2c2541; /* Deep purple from image's main content background */
-  --bg-secondary: #1e1a2e; /* Darker shade for overall page background */
-  --bg-sidebar: #3a3152; /* Slightly lighter purple for sidebar (will be floating) */
-  --bg-content: #2c2541; /* Content cards, same as primary for now */
-  --bg-accent: #4a4063; /* For hover, active states, input fields */
-  --bg-overlay: rgba(30, 26, 46, 0.8); /* For "frosted glass" if used */
+.light-theme {
+  /* Light Theme Variables */
+  --bg-primary: #ffffff;
+  --bg-secondary: #f7f7f7; /* Slightly off-white for page background if gradient isn't page-wide */
+  --bg-sidebar: #f0f0f0;
+  --bg-content: #ffffff;
+  --bg-accent: #ededed; /* Subtle accents, hover states */
+  --bg-overlay: rgba(255, 255, 255, 0.8);
+  --bg-input: #ffffff;
 
-  --text-primary: #f5f5f7; /* Off-white, similar to Apple's light text on dark */
-  --text-secondary: #a5a5aa; /* Softer grey for less emphasis */
-  --text-accent: #ff80bf; /* A vibrant pink/magenta accent from the image */
+  --text-primary: #1d1d1f; /* Apple's nearly black */
+  --text-secondary: #58585c;
+  --text-tertiary: #6b7280; /* General tertiary text */
+  --text-accent: #007aff; /* Apple Blue */
   --text-on-accent: #ffffff;
+  --text-link: #007aff;
+  --text-disabled: rgba(0, 0, 0, 0.25);
+  --text-error: #D32F2F;
+  --text-success: #388E3C;
+  --text-warning: #FBC02D;
+  --text-info: #0288D1;
+  --text-heading: #1d1d1f; /* Heading color for light theme */
 
-  --border-primary: #4a4063; /* Subtle borders using accent color */
-  --border-secondary: #3a3152; /* Darker border */
+  --border-primary: #d2d2d7; /* Subtle borders */
+  --border-secondary: #e5e5e5;
+  --border-color-input: #d1d5db;
 
-  /* Shadows adapted for dark theme (often more subtle or use glows) */
-  --shadow-soft: 0 1px 3px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.25);
-  --shadow-medium: 0 4px 8px rgba(0, 0, 0, 0.2), 0 2px 6px rgba(0, 0, 0, 0.15);
-  --shadow-strong: 0 10px 20px rgba(0, 0, 0, 0.2), 0 5px 10px rgba(0, 0, 0, 0.1);
+  --shadow-color: rgba(0, 0, 0, 0.08); /* Lighter shadow for light mode */
+  --shadow-elevation-low: 0 1px 2px var(--shadow-color), 0 2px 4px var(--shadow-color);
+  --shadow-elevation-medium: 0 4px 8px var(--shadow-color), 0 8px 16px var(--shadow-color);
+  --shadow-elevation-high: 0 6px 12px var(--shadow-color), 0 12px 24px var(--shadow-color);
 
-  /* Button colors for dark theme */
   --btn-primary-bg: var(--text-accent);
   --btn-primary-text: var(--text-on-accent);
-  --btn-primary-hover-bg: #ff66b3;
-
-  --btn-secondary-bg: var(--bg-accent);
+  --btn-primary-hover-bg: #005ecb;
+  --btn-secondary-bg: #e9e9eb;
   --btn-secondary-text: var(--text-primary);
-  --btn-secondary-hover-bg: #5c507a;
+  --btn-secondary-hover-bg: #dcdce0;
 
-  /* Specific status colors from image (approximate) */
-  --status-design-bg: #ff8c66; /* Orange-ish for "Design" */
-  --status-design-text: #ffffff;
-  --status-frontend-bg: #b380ff; /* Purple for "Frontend" */
-  --status-frontend-text: #ffffff;
-  --status-low-priority-bg: #8bc34a; /* Light green for "Low" */
-  --status-low-priority-text: #ffffff;
-  --status-high-priority-bg: #ff6680; /* Pink/Red for "High" */
-  --status-high-priority-text: #ffffff;
+  --bg-gradient-start: #f4f0f8; /* Light lavender for start of gradient */
+  --bg-gradient-end: #e8eff5;   /* Light blueish for end of gradient */
 
-  /* Sidebar specific colors for dark theme */
-  --sidebar-bg: #352D4D; /* Slightly different purple from image sidebar */
-  --sidebar-icon-active-bg: #FF80BF; /* Pink accent for active icon */
-  --sidebar-icon-color: var(--text-secondary);
-  --sidebar-icon-active-color: #ffffff;
-  --sidebar-text-color: var(--text-primary);
-}
-
-/* Applying light theme variables as fallbacks inside :root (if needed) */
-/* or explicitly create a .light-theme class if we don't want light to be the default */
-:root {
-  /* This sets up light theme as the base if no class is applied, 
-     but .dark-theme class will override these.
-     Since dark is now default, these act more as the light theme definitions.
-  */
-  --bg-primary: var(--bg-primary-light);
-  --bg-secondary: var(--bg-secondary-light);
-  --bg-sidebar: var(--bg-sidebar-light);
-  --bg-content: var(--bg-content-light);
-  --bg-accent: var(--bg-accent-light);
-  --bg-overlay: var(--bg-overlay-light);
-
-  --text-primary: var(--text-primary-light);
-  --text-secondary: var(--text-secondary-light);
-  --text-accent: var(--text-accent-light);
-  --text-on-accent: var(--text-on-accent-light);
-
-  --border-primary: var(--border-primary-light);
-  --border-secondary: var(--border-secondary-light);
-
-  --shadow-soft: var(--shadow-soft-light);
-  --shadow-medium: var(--shadow-medium-light);
-  --shadow-strong: var(--shadow-strong-light);
-
-  --btn-primary-bg: var(--btn-primary-bg-light);
-  --btn-primary-text: var(--btn-primary-text-light);
-  --btn-primary-hover-bg: var(--btn-primary-hover-bg-light);
-
-  --btn-secondary-bg: var(--btn-secondary-bg-light);
-  --btn-secondary-text: var(--btn-secondary-text-light);
-  --btn-secondary-hover-bg: var(--btn-secondary-hover-bg-light);
-
-  /* Ensure status colors also have light theme variants or are universal */
-  /* For now, using the dark theme ones as placeholders */
+  /* Universal status colors, or define light-specific if needed */
   --status-design-bg: #ff8c66;
   --status-design-text: #ffffff;
   --status-frontend-bg: #b380ff;
@@ -139,25 +65,83 @@
   --status-high-priority-bg: #ff6680;
   --status-high-priority-text: #ffffff;
 
-   /* Sidebar specific colors for light theme */
-  --sidebar-bg: var(--bg-sidebar-light);
-  --sidebar-icon-active-bg: var(--text-accent-light);
-  --sidebar-icon-color: var(--text-secondary-light);
-  --sidebar-icon-active-color: var(--text-on-accent-light);
-  --sidebar-text-color: var(--text-primary-light);
+  --sidebar-bg: #f0f0f0;
+  --sidebar-icon-active-bg: var(--text-accent);
+  --sidebar-icon-color: var(--text-secondary);
+  --sidebar-icon-active-color: var(--text-on-accent);
+  --sidebar-text-color: var(--text-primary);
+}
+
+.dark-theme {
+  /* Dark Theme Variables */
+  --bg-primary: #2c2541; /* Deep purple from image's main content background */
+  --bg-secondary: #1e1a2e; /* Darker shade for overall page background if gradient isn't page-wide */
+  --bg-sidebar: #352D4D; /* Slightly different purple from image sidebar */
+  --bg-content: #2c2541;
+  --bg-accent: #4a4063; /* For hover, active states, input fields */
+  --bg-overlay: rgba(30, 26, 46, 0.8);
+  --bg-input: #252525; /* Slightly different background for input field in dark mode */
+
+  --text-primary: #f5f5f7; /* Off-white, similar to Apple's light text on dark */
+  --text-secondary: #a5a5aa; /* Softer grey for less emphasis */
+  --text-tertiary: rgba(255, 255, 255, 0.5);
+  --text-accent: #ff80bf; /* A vibrant pink/magenta accent from the image */
+  --text-on-accent: #ffffff;
+  --text-link: #A66FFC;
+  --text-disabled: rgba(255, 255, 255, 0.3);
+  --text-error: #FF7575;
+  --text-success: #75FF9C;
+  --text-warning: #FFDA75;
+  --text-info: #75D1FF;
+  --text-heading: #f5f5f7; /* Heading color for dark theme */
+
+  --border-primary: #4a4063; /* Subtle borders using accent color */
+  --border-secondary: #3a3152; /* Darker border */
+  --border-color-input: #545454; /* Darker, more contrasted border for input */
+
+  --shadow-color: rgba(0, 0, 0, 0.3); /* Darker shadow for dark mode */
+  --shadow-elevation-low: 0 1px 2px var(--shadow-color), 0 2px 4px var(--shadow-color);
+  --shadow-elevation-medium: 0 4px 8px var(--shadow-color), 0 8px 16px var(--shadow-color);
+  --shadow-elevation-high: 0 6px 12px var(--shadow-color), 0 12px 24px var(--shadow-color);
+
+  --btn-primary-bg: var(--text-accent);
+  --btn-primary-text: var(--text-on-accent);
+  --btn-primary-hover-bg: #ff66b3;
+  --btn-secondary-bg: var(--bg-accent);
+  --btn-secondary-text: var(--text-primary);
+  --btn-secondary-hover-bg: #5c507a;
+
+  --bg-gradient-start: #2a2a3a; /* Darker violet for start of gradient */
+  --bg-gradient-end: #1e1e2f;   /* Slightly different dark for end of gradient */
+
+  /* Status colors (can be kept same as light or defined separately) */
+  --status-design-bg: #ff8c66;
+  --status-design-text: #ffffff;
+  --status-frontend-bg: #b380ff;
+  --status-frontend-text: #ffffff;
+  --status-low-priority-bg: #8bc34a;
+  --status-low-priority-text: #ffffff;
+  --status-high-priority-bg: #ff6680;
+  --status-high-priority-text: #ffffff;
+
+  --sidebar-bg: #352D4D;
+  --sidebar-icon-active-bg: #FF80BF;
+  --sidebar-icon-color: var(--text-secondary);
+  --sidebar-icon-active-color: #ffffff;
+  --sidebar-text-color: var(--text-primary);
 }
 
 body {
   margin: 0;
-  font-family: var(--font-primary); /* Use new font stack */
+  font-family: var(--font-primary);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: var(--bg-page); /* Ensure page background uses a variable */
+  background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+  background-attachment: fixed;
   color: var(--text-primary);
-  box-sizing: border-box; /* Ensure padding doesn't add to width/height */
-  transition: background-color 0.3s ease, color 0.3s ease;
-  font-size: 16px; /* Base font size */
-  line-height: 1.6; /* Improved readability */
+  transition: background var(--transition-medium), color var(--transition-medium);
+  min-height: 100vh;
+  overflow-x: hidden; /* Prevent horizontal scroll from slight overflows if any */
 }
 
 code {
@@ -191,101 +175,24 @@ input, select, textarea {
   font-family: var(--font-primary);
   padding: 10px 12px;
   border-radius: var(--radius-medium);
-  border: 1px solid var(--border-primary);
-  background-color: var(--bg-accent); /* Using accent for input backgrounds */
+  border: 1px solid var(--border-color-input);
+  background-color: var(--bg-input);
   color: var(--text-primary);
   font-size: 15px;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
 }
 
 input:focus, select:focus, textarea:focus {
   outline: none;
   border-color: var(--text-accent); /* Highlight with accent color */
-  box-shadow: 0 0 0 2px var(--text-accent); /* Subtle focus ring */
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--text-accent) 40%, transparent); /* Subtle focus ring using accent */
 }
 
-:root.dark {
-  --bg-page: var(--dark-bg-page); /* Define for dark mode */
-  --bg-primary: var(--dark-bg-primary);
-  --bg-secondary: var(--dark-bg-secondary);
-  --bg-input: #252525; /* Slightly different background for input field in dark mode */
-  --border-color-input: #545454; /* Darker, more contrasted border for input */
-  --dark-bg-page: #121212; /* Darker page background for dark theme */
-  --dark-bg-primary: #1e1e1e; /* Main content cards */
-  --dark-bg-secondary: #2a2a2a; /* Sidebar, slightly off-main */
-  --dark-text-primary: #e0e0e0;
-  --dark-text-secondary: #b0b0b0;
-  --dark-text-tertiary: #808080;
-  --dark-text-accent: #0a84ff;
-  --dark-border-color: #3a3a3c;
-  --dark-border-color-input: #545454; /* Darker, more contrasted border for input */
+h1, h2, h3, h4, h5, h6 {
+  margin-top: 0;
+  margin-bottom: 0.75em;
+  font-weight: 600; /* Slightly bolder for better presence */
+  color: var(--text-heading); /* Uses theme-dependent --text-heading */
 }
 
-:root.light {
-  --bg-page: var(--light-bg-page); /* Define for light mode */
-  --bg-primary: var(--light-bg-primary);
-  --bg-secondary: var(--light-bg-secondary);
-  --bg-input: #fff; /* Example for light mode input background */
-  --border-color-input: #d1d5db; /* Example for light mode input border */
-  --light-bg-page: #f0f2f5; /* Lighter page background for light theme */
-  --light-bg-primary: #ffffff;
-  --light-bg-secondary: #f8f9fa;
-  --light-text-primary: #1f2937;
-  --light-text-secondary: #4b5563;
-  --light-text-tertiary: #6b7280;
-  --light-text-accent: #007aff;
-  --light-border-color: #e5e7eb;
-  --light-border-color-input: #d1d5db;
-  --light-bg-input: #ffffff;
-  --dark-bg-page: #1F1F1F; /* Fallback if not already defined */
-  --dark-bg-primary: #2C2C2E;
-  --dark-bg-secondary: #3A3A3C;
-  --dark-bg-input: #2c2c2e; /* Ensuring dark input bg is distinct */
-  --dark-border-color-input: #4a4a4e;
-}
-
-/* Update root to define new variables for light/dark input to ensure contrast */
-:root {
-  /* ... other variables ... */
-  --font-family-apple: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-  --radius-small: 4px;
-  --radius-medium: 8px;
-  --radius-large: 12px;
-  --transition-fast: 0.2s ease-in-out;
-  --transition-medium: 0.3s ease-in-out;
-
-  /* Light Theme Defaults (also base if no class is applied) */
-  --light-bg-page: #f0f2f5; /* Lighter page background for light theme */
-  --light-bg-primary: #ffffff;
-  --light-bg-secondary: #f8f9fa;
-  --light-text-primary: #1f2937;
-  --light-text-secondary: #4b5563;
-  --light-text-tertiary: #6b7280;
-  --light-text-accent: #007aff;
-  --light-border-color: #e5e7eb;
-  --light-border-color-input: #d1d5db;
-  --light-bg-input: #ffffff;
-
-  /* Dark Theme Defaults */
-  --dark-bg-page: #121212; /* Darker page background for dark theme */
-  --dark-bg-primary: #1e1e1e; /* Main content cards */
-  --dark-bg-secondary: #2a2a2a; /* Sidebar, slightly off-main */
-  --dark-text-primary: #e0e0e0;
-  --dark-text-secondary: #b0b0b0;
-  --dark-text-tertiary: #808080;
-  --dark-text-accent: #0a84ff;
-  --dark-border-color: #3a3a3c;
-  --dark-border-color-input: #545454; /* Darker, more contrasted border for input */
-  --dark-bg-input: #252525; /* Slightly different background for input field in dark mode */
-
-  /* Default to light theme variables first */
-  --bg-page: var(--light-bg-page);
-  --bg-primary: var(--light-bg-primary);
-  --bg-secondary: var(--light-bg-secondary);
-  --text-primary: var(--light-text-primary);
-  --text-secondary: var(--light-text-secondary);
-  --text-tertiary: var(--light-text-tertiary);
-  --text-accent: var(--light-text-accent);
-  --border-color: var(--light-border-color);
-  --border-color-input: var(--light-border-color-input);
-  --bg-input: var(--light-bg-input);
-} 
+/* Additional global styles or utility classes can go here */ 

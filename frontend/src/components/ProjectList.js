@@ -33,7 +33,7 @@ const ProjectList = () => {
       <nav>
         <ul>
           <li>
-            <button className={`Sidebar-icon ${!selectedProject && viewMode !== 'add_form' ? 'active' : ''}`} onClick={navigateToDashboard} title="Dashboard">
+            <button className={`Sidebar-icon ${viewMode === 'dashboard' ? 'active' : ''}`} onClick={navigateToDashboard} title="Dashboard">
               <Home size={24} />
             </button>
           </li>

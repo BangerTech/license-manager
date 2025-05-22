@@ -81,4 +81,45 @@ export const deleteProject = (projectId) => {
     return request(`/projects/${projectId}`, 'DELETE');
 };
 
+export const changePassword = async (passwordData) => {
+  const token = localStorage.getItem('authToken');
+  if (!token) {
+    throw new Error('No authentication token found.');
+  }
+
+  const response = await fetch(`${API_BASE_URL}/auth/change-password`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    },
+    body: JSON.stringify(passwordData) // { currentPassword, newPassword, confirmPassword }
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({ message: 'Failed to change password. Please try again.' }));
+    throw new Error(errorData.message || 'Failed to change password.');
+  }
+
+  return await response.json(); // Should return { message: 'Password changed successfully.' }
+};
+
+// Notification API functions
+export const fetchNotifications = (params = { limit: 20, offset: 0, unreadOnly: false }) => {
+  const queryParams = new URLSearchParams();
+  if (params.limit) queryParams.append('limit', params.limit);
+  if (params.offset) queryParams.append('offset', params.offset);
+  if (params.unreadOnly) queryParams.append('unreadOnly', params.unreadOnly);
+  
+  return request(`/notifications?${queryParams.toString()}`, 'GET');
+};
+
+export const markNotificationAsRead = (notificationId) => {
+  return request(`/notifications/${notificationId}/read`, 'PUT');
+};
+
+export const markAllNotificationsAsRead = () => {
+  return request('/notifications/read-all', 'PUT');
+};
+
 export default request; 

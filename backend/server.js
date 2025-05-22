@@ -8,9 +8,11 @@ const { authenticateToken, login } = require('./middleware/auth'); // Import aut
 
 const projectRoutes = require('./routes/projects'); // Import project routes
 const licenseRoutes = require('./routes/license'); // Import license routes
+const authRoutes = require('./routes/auth'); // Import auth routes
+const notificationRoutes = require('./routes/notifications'); // Import notification routes
 
 const app = express();
-const PORT = process.env.PORT || 4000;
+const PORT = process.env.BACKEND_PORT || 4000;
 
 // Middleware
 app.use(cors()); // Enable CORS for all routes and origins
@@ -29,6 +31,8 @@ app.post('/api/auth/login', login);
 app.use('/api/projects', authenticateToken, projectRoutes);
 // Public license check route (no authentication needed for client apps)
 app.use('/api/license', licenseRoutes);
+app.use('/api/auth', authRoutes); // Use auth routes
+app.use('/api/notifications', notificationRoutes); // Use notification routes
 
 // Global error handler (basic example)
 app.use((err, req, res, next) => {

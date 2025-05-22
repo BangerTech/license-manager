@@ -1,0 +1,82 @@
+.Settings-page-container {
+    padding: 25px;
+    max-width: 600px; /* Limit width for better readability */
+    margin: 0 auto; /* Center the form on larger screens if it's not full width */
+}
+
+.Settings-page-container h2 {
+    margin-bottom: 10px;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+}
+
+.Settings-page-container p {
+    margin-bottom: 25px;
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+}
+
+.Settings-form .Form-group {
+    margin-bottom: 20px;
+}
+
+.Settings-form label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: var(--text-primary);
+    font-size: 0.9rem;
+}
+
+.Settings-form input[type="password"] {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--border-color-light);
+    border-radius: var(--radius-medium);
+    background-color: var(--bg-input);
+    color: var(--text-input);
+    font-size: 1rem;
+    transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.Settings-form input[type="password"]:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 2px var(--accent-color-translucent);
+}
+
+.Settings-form input[type="password"]:disabled {
+    background-color: var(--bg-input-disabled);
+    cursor: not-allowed;
+}
+
+/* General Message Styling (reusable for success/error) */
+.Message {
+    padding: 12px 15px;
+    margin-bottom: 20px;
+    border-radius: var(--radius-medium);
+    display: flex;
+    align-items: center;
+    font-size: 0.95rem;
+}
+
+.Message-error {
+    background-color: var(--error-bg);
+    color: var(--error-text);
+    border: 1px solid var(--error-border);
+}
+
+.Message-success {
+    background-color: var(--success-bg);
+    color: var(--success-text);
+    border: 1px solid var(--success-border);
+}
+
+/* Re-using existing Button styles, but if specific styling is needed:
+.Settings-form .Button-primary {
+    width: 100%;
+    padding: 12px 20px;
+    font-size: 1rem;
+}
+*/ 

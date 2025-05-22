@@ -1,0 +1,160 @@
+.Notifications-page-container {
+    padding: 25px;
+}
+
+.Notifications-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.Notifications-header h2 {
+    margin: 0;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+}
+
+.Notifications-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.Notifications-actions .Button.active {
+    background-color: var(--accent-color-translucent); /* Or a specific active color */
+    border-color: var(--accent-color);
+}
+
+.Loading-message,
+.No-notifications-message {
+    text-align: center;
+    padding: 20px;
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+}
+
+.Notifications-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.Notification-item {
+    background-color: var(--bg-secondary-alt); /* Slightly different from card bg */
+    border: 1px solid var(--border-color-light);
+    border-radius: var(--radius-medium);
+    padding: 15px;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+    transition: background-color var(--transition-fast);
+}
+
+.Notification-item.read {
+    background-color: var(--bg-secondary); /* More subdued for read items */
+    opacity: 0.7;
+}
+
+.Notification-icon {
+    margin-top: 2px; /* Align with text better */
+}
+
+.Notification-icon .icon-success {
+    color: var(--success-text); 
+}
+.Notification-icon .icon-error {
+    color: var(--error-text);
+}
+.Notification-icon .icon-default {
+    color: var(--text-tertiary);
+}
+
+.Notification-content {
+    flex-grow: 1;
+}
+
+.Notification-message {
+    margin: 0 0 5px 0;
+    font-weight: 500;
+    color: var(--text-primary);
+    font-size: 1rem;
+}
+
+.Notification-timestamp {
+    font-size: 0.8rem;
+    color: var(--text-tertiary);
+    display: block;
+    margin-bottom: 8px;
+}
+
+.Notification-details {
+    background-color: var(--bg-code-block);
+    color: var(--text-code-block);
+    padding: 8px;
+    border-radius: var(--radius-small);
+    font-size: 0.75rem;
+    white-space: pre-wrap;       /* Since CSS 2.1 */
+    white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+    white-space: -pre-wrap;      /* Opera 4-6 */
+    white-space: -o-pre-wrap;    /* Opera 7 */
+    word-wrap: break-word;       /* Internet Explorer 5.5+ */
+    max-height: 100px; /* Limit height and allow scroll if needed */
+    overflow-y: auto;
+    border: 1px solid var(--border-color-dark);
+}
+
+.Notification-item .Button-icon {
+    padding: 5px;
+    align-self: center; /* Center the button vertically */
+}
+
+/* Pagination styles */
+.Pagination-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 25px;
+    gap: 10px;
+}
+
+.Pagination-controls button {
+    padding: 8px 12px;
+    border-radius: var(--radius-small);
+    background-color: var(--bg-button);
+    color: var(--text-button);
+    border: 1px solid var(--border-color-button);
+    cursor: pointer;
+    transition: background-color var(--transition-fast);
+}
+
+.Pagination-controls button:hover:not(:disabled) {
+    background-color: var(--bg-button-hover);
+}
+
+.Pagination-controls button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.Pagination-controls span {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+/* Message styling reuse from SettingsPage or define globally if not already */
+.Message {
+    padding: 12px 15px;
+    margin-bottom: 20px;
+    border-radius: var(--radius-medium);
+    display: flex;
+    align-items: center;
+    font-size: 0.95rem;
+}
+
+.Message-error {
+    background-color: var(--error-bg);
+    color: var(--error-text);
+    border: 1px solid var(--error-border);
+} 
