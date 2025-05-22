@@ -342,19 +342,18 @@
 /* Dashboard Specific */
 .Dashboard-overview-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); /* Adjusted minmax */
   gap: 20px;
 }
 
 .Dashboard-project-card {
-  background-color: var(--bg-content-card); 
+  background-color: var(--bg-content); /* Changed to match Content-card */
   padding: 20px;
   border-radius: var(--radius-large); 
-  box-shadow: var(--shadow-elevation-card);
+  box-shadow: var(--shadow-elevation-medium); /* Changed to match Content-card */
   cursor: pointer;
   transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
   border: none; /* Explicitly remove all borders */
-  /* border-top: none; */ /* Alternative: just remove top border */
 }
 
 .Dashboard-project-card:hover {
