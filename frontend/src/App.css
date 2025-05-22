@@ -347,11 +347,14 @@
 }
 
 .Dashboard-project-card {
-  background-color: var(--bg-accent); 
+  background-color: var(--bg-content-card); 
   padding: 20px;
-  border-radius: var(--radius-large);
-  box-shadow: var(--shadow-elevation-low);
-  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+  border-radius: var(--radius-large); 
+  box-shadow: var(--shadow-elevation-card);
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  border: none; /* Explicitly remove all borders */
+  /* border-top: none; */ /* Alternative: just remove top border */
 }
 
 .Dashboard-project-card:hover {
@@ -598,4 +601,90 @@
 
 .dashboard-add-project-button svg {
   /* Size is set inline, but can be controlled here if needed */
+}
+
+/* ProjectDetails.js specific styles for buttons */
+.Status-buttons-container {
+  display: flex;
+  flex-wrap: wrap; /* Allow buttons to wrap on smaller screens */
+  gap: 12px; /* Space between buttons */
+  margin-top: 24px; /* Space above the button container */
+  padding-top: 20px; /* Space above buttons, below notes */
+  border-top: 1px solid var(--border-secondary); /* Separator line */
+}
+
+.status-button {
+  padding: 10px 18px;
+  border-radius: var(--radius-medium);
+  border: 1px solid var(--border-button);
+  background-color: var(--bg-button);
+  color: var(--text-button);
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color var(--transition-fast), border-color var(--transition-fast), color var(--transition-fast);
+  display: flex;
+  align-items: center;
+  gap: 8px; /* Space between icon and text */
+}
+
+.status-button:hover {
+  background-color: var(--bg-button-hover);
+  border-color: var(--border-button-hover);
+  color: var(--text-button-hover);
+}
+
+.status-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.status-button.current-status {
+  background-color: var(--bg-button-active);
+  color: var(--text-button-active);
+  border-color: var(--border-button-active);
+  font-weight: 600;
+}
+
+/* Specific styles for each status button to match their status colors */
+.status-button.not-paid.current-status {
+  background-color: var(--status-high-priority-bg);
+  color: var(--status-high-priority-text);
+  border-color: var(--status-high-priority-border);
+}
+.status-button.not-paid:not(.current-status):hover {
+    background-color: color-mix(in srgb, var(--status-high-priority-bg) 80%, var(--bg-button-hover));
+    color: var(--status-high-priority-text);
+}
+
+.status-button.partially-paid.current-status {
+  background-color: var(--status-design-bg);
+  color: var(--status-design-text);
+  border-color: var(--status-design-border);
+}
+.status-button.partially-paid:not(.current-status):hover {
+    background-color: color-mix(in srgb, var(--status-design-bg) 80%, var(--bg-button-hover));
+    color: var(--status-design-text);
+}
+
+.status-button.fully-paid.current-status {
+  background-color: var(--status-low-priority-bg);
+  color: var(--status-low-priority-text);
+  border-color: var(--status-low-priority-border);
+}
+.status-button.fully-paid:not(.current-status):hover {
+    background-color: color-mix(in srgb, var(--status-low-priority-bg) 80%, var(--bg-button-hover));
+    color: var(--status-low-priority-text);
+}
+
+/* Edit button specific style - can be more neutral or accent */
+.status-button.edit-button {
+  background-color: var(--btn-secondary-bg);
+  color: var(--btn-secondary-text);
+  border-color: var(--btn-secondary-border); /* Assuming you have or will add this variable */
+}
+
+.status-button.edit-button:hover {
+  background-color: var(--btn-secondary-hover-bg);
+  color: var(--btn-secondary-hover-text);
+  border-color: var(--btn-secondary-hover-border); /* Assuming you have or will add this variable */
 } 

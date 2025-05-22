@@ -72,6 +72,8 @@ const initializeDatabase = async () => {
         id SERIAL PRIMARY KEY,
         username VARCHAR(255) NOT NULL UNIQUE,
         password_hash VARCHAR(255) NOT NULL,
+        role VARCHAR(50) NOT NULL DEFAULT 'administrator',
+        profile_image_url TEXT NULL,
         created_at TIMESTAMPTZ DEFAULT NOW(),
         updated_at TIMESTAMPTZ DEFAULT NOW()
       );
@@ -83,14 +85,15 @@ const initializeDatabase = async () => {
     if (parseInt(adminRes.rows[0].count, 10) === 0) {
       const adminUsername = process.env.ADMIN_USERNAME;
       const adminPassword = process.env.ADMIN_PASSWORD;
+      const adminRole = 'administrator';
       if (adminUsername && adminPassword) {
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(adminPassword, salt);
         await client.query(
-          'INSERT INTO admins (username, password_hash) VALUES ($1, $2)',
-          [adminUsername, hashedPassword]
+          'INSERT INTO admins (username, password_hash, role) VALUES ($1, $2, $3)',
+          [adminUsername, hashedPassword, adminRole]
         );
-        console.log(`Default admin user "${adminUsername}" created.`);
+        console.log(`Default admin user "${adminUsername}" created with role "${adminRole}".`);
       } else {
         console.error('ADMIN_USERNAME or ADMIN_PASSWORD environment variables are not set. Cannot create default admin.');
       }

@@ -17,6 +17,48 @@
     font-size: 0.95rem;
 }
 
+.Settings-tabs {
+    display: flex;
+    margin-bottom: 20px;
+    border-bottom: 1px solid var(--border-color-light);
+}
+
+.Tab-button {
+    padding: 10px 15px;
+    cursor: pointer;
+    border: none;
+    background-color: transparent;
+    color: var(--text-color-secondary);
+    font-size: 1rem;
+    font-weight: 500;
+    border-bottom: 2px solid transparent; /* For active indicator */
+    margin-right: 10px; /* Spacing between tabs */
+    transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.Tab-button:hover {
+    color: var(--text-color-primary);
+}
+
+.Tab-button.active {
+    color: var(--primary-color);
+    border-bottom-color: var(--primary-color);
+    font-weight: 600;
+}
+
+.Settings-tab-content {
+    padding-top: 10px;
+}
+
+.Settings-tab-content h3 {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 1.4rem;
+    margin-bottom: 15px;
+    color: var(--text-color-primary);
+}
+
 .Settings-form .Form-group {
     margin-bottom: 20px;
 }
@@ -24,31 +66,77 @@
 .Settings-form label {
     display: block;
     margin-bottom: 8px;
-    font-weight: 600;
-    color: var(--text-primary);
-    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--text-color-secondary);
 }
 
-.Settings-form input[type="password"] {
+.Settings-form input[type="password"],
+.Settings-form input[type="text"],
+.Settings-form input[type="email"] {
     width: 100%;
-    padding: 12px;
-    border: 1px solid var(--border-color-light);
-    border-radius: var(--radius-medium);
-    background-color: var(--bg-input);
-    color: var(--text-input);
+    max-width: 400px; /* Or adjust as needed */
+    padding: 10px;
+    border: 1px solid var(--border-color-strong);
+    border-radius: var(--border-radius-medium);
+    background-color: var(--background-color-secondary);
+    color: var(--text-color-primary);
     font-size: 1rem;
-    transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
 }
 
-.Settings-form input[type="password"]:focus {
+.Settings-form input:focus {
     outline: none;
-    border-color: var(--accent-color);
-    box-shadow: 0 0 0 2px var(--accent-color-translucent);
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px var(--primary-color-translucent);
 }
 
-.Settings-form input[type="password"]:disabled {
-    background-color: var(--bg-input-disabled);
-    cursor: not-allowed;
+/* Table for User Management */
+.Admin-user-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.Admin-user-table th,
+.Admin-user-table td {
+    padding: 10px 15px;
+    text-align: left;
+    border-bottom: 1px solid var(--border-color-light);
+}
+
+.Admin-user-table th {
+    font-weight: 600;
+    color: var(--text-color-secondary);
+    background-color: var(--background-color-secondary-translucent); /* Subtle header background */
+}
+
+.Admin-user-table td {
+    color: var(--text-color-primary);
+}
+
+/* Message styles (error/success) - can be reused */
+.Message {
+    padding: 10px 15px;
+    margin: 15px 0;
+    border-radius: var(--border-radius-medium);
+    display: flex;
+    align-items: center;
+    max-width: 400px; /* Match input width roughly */
+}
+
+.Message-error {
+    background-color: var(--error-color-background);
+    color: var(--error-color-text);
+    border: 1px solid var(--error-color-border);
+}
+
+.Message-success {
+    background-color: var(--success-color-background);
+    color: var(--success-color-text);
+    border: 1px solid var(--success-color-border);
+}
+
+.Message svg {
+    margin-right: 8px;
 }
 
 /* General Message Styling (reusable for success/error) */

@@ -21,6 +21,21 @@ services:
         condition: service_healthy
     restart: unless-stopped
 
+  test-client: # New service for the test client application
+    image: node:18-alpine
+    container_name: license-manager-test-client-1
+    working_dir: /usr/src/app
+    volumes:
+      - ./test-client-app.js:/usr/src/app/test-client-app.js
+    command: ["node", "test-client-app.js"]
+    environment:
+      - LICENSE_SERVER_URL=http://backend:4000 # 'backend' is the service name of your backend container
+      - PROJECT_IDENTIFIER=test-project-001 # Example identifier, can be overridden
+      # - NODE_ENV=${NODE_ENV:-development}
+    depends_on:
+      - backend
+    restart: on-failure # Or unless-stopped, depending on how you want to manage it
+
   frontend:
     build: 
       context: ./frontend

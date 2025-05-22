@@ -84,10 +84,12 @@ This table stores credentials for administrators who can log into the admin UI.
 | `id`          | SERIAL        | Primary Key, auto-incrementing integer           | Unique                                             |
 | `username`    | VARCHAR(255)  | Username for the admin                           | Required, Unique                                   |
 | `password_hash`| VARCHAR(255)  | Hashed password for the admin                    | Required                                           |
+| `role`        | VARCHAR(50)   | Role of the admin user (e.g., 'administrator')   | Required, Default: 'administrator'                 |
+| `profile_image_url` | TEXT      | URL or path to the user's profile picture        | Nullable                                           |
 | `created_at`  | TIMESTAMPTZ   | Date and time of admin account creation          | Default: `NOW()`                                   |
 | `updated_at`  | TIMESTAMPTZ   | Date and time of last admin account update       | Default: `NOW()`, updates on password change       |
 
-**Note on Initial Admin:** The `ADMIN_USERNAME` and `ADMIN_PASSWORD` specified in the `.env` file are used to create an initial admin user if the `admins` table is empty upon application startup. Subsequent logins and password management will use this table.
+**Note on Initial Admin:** The `ADMIN_USERNAME` and `ADMIN_PASSWORD` specified in the `.env` file are used to create an initial admin user if the `admins` table is empty upon application startup. This user will be assigned the default role. Subsequent logins and password management will use this table.
 
 ### 5.3. `Notifications` Table
 
@@ -130,8 +132,8 @@ This table stores records of important events that occur within the application,
 *   **`POST /api/auth/login`**
     *   Description: Authenticates an administrator.
     *   Request Body: `{ "username": "string", "password": "string" }`
-    *   Response: `{ "token": "JWT_TOKEN", "user": { "id": "integer", "username": "string" } }`
-    *   Note: This endpoint now authenticates against the `admins` table in the database.
+    *   Response: `{ "token": "JWT_TOKEN", "user": { "id": "integer", "username": "string", "role": "string", "profile_image_url": "string_or_null" } }`
+    *   Note: This endpoint now authenticates against the `admins` table in the database and should return the user's role and profile image URL.
 
 *   **`PUT /api/auth/change-password`**
     *   Description: Allows an authenticated administrator to change their password.
@@ -141,7 +143,65 @@ This table stores records of important events that occur within the application,
     *   Response (Error 400 Bad Request): If input is invalid (e.g., passwords don't match, new password too short).
     *   Response (Error 401 Unauthorized): If `currentPassword` is incorrect or token is invalid/expired.
 
-### 6.3. For Notifications (Admin UI)
+### 6.3. For Admin User Management (New Section)
+
+These endpoints are for managing administrator accounts and should typically require 'administrator' role privileges.
+
+*   **`GET /api/admins`**
+    *   Description: Retrieves a list of all admin users.
+    *   Authentication: Requires JWT Bearer token (with appropriate admin privileges).
+    *   Response: Array of admin user objects: `[{ "id": "integer", "username": "string", "role": "string", "profile_image_url": "string_or_null", "created_at": "timestamp", "updated_at": "timestamp" }, ...]` (Password hash should NOT be included).
+
+*   **`POST /api/admins`** (Consider adding this for creating new admins)
+    *   Description: Creates a new admin user.
+    *   Authentication: Requires JWT Bearer token (with appropriate admin privileges).
+    *   Request Body: `{ "username": "string" (optional), "role": "string" (optional) }`
+    *   Response: The updated admin user object (excluding password hash, including profile_image_url).
+
+*   **`PUT /api/admins/{adminId}`**
+    *   Description: Updates an admin user's details (username, role).
+    *   Authentication: Requires JWT Bearer token (with appropriate admin privileges).
+    *   Path Parameter: `adminId` - The ID of the admin user to update.
+    *   Request Body: `{ "username": "string" (optional), "role": "string" (optional) }`
+    *   Response: The updated admin user object (excluding password hash).
+
+*   **`PUT /api/admins/{adminId}/password`**
+    *   Description: Allows a privileged administrator to set/change the password for another admin user (typically part of an "Edit User" flow).
+    *   Authentication: Requires JWT Bearer token (with appropriate admin privileges).
+    *   Path Parameter: `adminId` - The ID of the admin user whose password is to be changed.
+    *   Request Body: `{ "newPassword": "string" }`
+    *   Response (Success 200 OK): `{ "message": "Password changed successfully for user." }`
+    *   Response (Error 400 Bad Request): If input is invalid (e.g., new password too short).
+    *   Response (Error 403 Forbidden): If the authenticated user does not have permission.
+    *   Response (Error 404 Not Found): If the `adminId` is not found.
+
+*   **`DELETE /api/admins/{adminId}`**
+    *   Description: Deletes an admin user.
+    *   Authentication: Requires JWT Bearer token (with appropriate admin privileges).
+    *   Path Parameter: `adminId` - The ID of the admin user to delete.
+    *   Response (Success 200/204 OK): Success message or no content.
+    *   Response (Error 403 Forbidden): If the authenticated user does not have permission (e.g., trying to delete themselves or a superadmin).
+    *   Response (Error 404 Not Found): If the `adminId` is not found.
+
+*   **`POST /api/admins/{adminId}/profile-picture` (New)**
+    *   Description: Uploads or updates a profile picture for a specific admin user.
+    *   Authentication: Requires JWT Bearer token (with appropriate admin privileges, or user themself).
+    *   Path Parameter: `adminId` - The ID of the admin user.
+    *   Request Body: `multipart/form-data` with a single file field (e.g., `profilePicture`).
+    *   Response (Success 200 OK): `{ "message": "Profile picture updated successfully.", "profile_image_url": "string" }`
+    *   Response (Error 400 Bad Request): If file is missing, wrong type, too large, etc.
+    *   Response (Error 403 Forbidden): If the authenticated user does not have permission.
+    *   Response (Error 404 Not Found): If `adminId` not found.
+
+*   **`DELETE /api/admins/{adminId}/profile-picture` (New)**
+    *   Description: Deletes the profile picture for a specific admin user.
+    *   Authentication: Requires JWT Bearer token (with appropriate admin privileges, or user themself).
+    *   Path Parameter: `adminId` - The ID of the admin user.
+    *   Response (Success 200 OK): `{ "message": "Profile picture deleted successfully." }`
+    *   Response (Error 403 Forbidden): If the authenticated user does not have permission.
+    *   Response (Error 404 Not Found): If `adminId` not found or no picture to delete.
+
+### 6.4. For Notifications (Admin UI)
 
 All notification endpoints require JWT Bearer token authentication.
 
@@ -161,7 +221,7 @@ All notification endpoints require JWT Bearer token authentication.
     *   Description: Marks all unread notifications as read for the current admin (or globally, depending on implementation nuances).
     *   Response: `{ message: "All unread notifications marked as read." }`
 
-### 6.4. For Client Applications
+### 6.5. For Client Applications
 
 *   **`GET /api/license/check_status?project_identifier={identifier}`**
     *   Description: Allows a client application to check its license status.
@@ -175,6 +235,18 @@ All notification endpoints require JWT Bearer token authentication.
 ## 7. User Interface (UI) Design - "Apple Style"
 
 *(This section outlines the UI/UX, focusing on a clean, modern, and intuitive "Apple-like" aesthetic. The application now features a default dark theme, with a light theme as an alternative, configurable by the user. The overall page layout has been updated to an "inset" style where the main application content (sidebar and main area) has padding, but the page background extends to the browser edges. State management is handled via React's Context API: `AuthContext`, `ProjectContext`, and `ThemeContext`.)*
+
+*   **Settings Page Update:**
+    *   The Settings page will feature a tabbed interface.
+    *   **"My Password" Tab:** Allows the logged-in user to change their own password.
+    *   **"User Management" Tab (Admin only):**
+        *   Displays a list of users with their profile picture (or a default avatar), username, and role.
+        *   Provides actions to "Add User" and, for each user in the list, "Edit" and "Delete".
+        *   The "Edit User" action will open a modal/dialog where an administrator can:
+            *   Update the user's username and role.
+            *   Upload/change the user's profile picture.
+            *   Set/change the user's password.
+    *   **"Notification Settings" Tab:** (Placeholder for future enhancements regarding user-configurable notification preferences).
 
 *   **Overall Layout: Application Shell**
     *   The previous full-width `Top-bar` has been removed. Its functionalities (breadcrumbs, page title, search bar) are now integrated into a `MainContentHeader` component displayed at the top of the `Main-content-area`.
@@ -296,6 +368,7 @@ An example Node.js client implementation can be found in `client_license_check_e
 
 ### Backend (`./backend/`)
 *   `server.js`: Main application file, sets up Express server, middleware, routes.
+*   `uploads/profile_pictures/`: (Gitignored) Directory where uploaded profile pictures will be stored.
 *   `Dockerfile`: Defines the Docker image for the backend service.
 *   `package.json`: Node.js project manifest and dependencies.
 *   `routes/`: Contains route handlers for different API endpoints (e.g., `projects.js`, `auth.js`, `license.js`, `notifications.js`).
@@ -352,6 +425,24 @@ An example Node.js client implementation can be found in `client_license_check_e
 *   **Full Light Theme Review:** Ensure all components are styled correctly for the light theme.
 *   **Advanced Notification Features:** Consider real-time notifications or more detailed filtering.
 *   **Security Hardening:** Conduct a thorough security review, especially for API endpoints and authentication mechanisms.
+
+*   **`POST /api/admins/{adminId}/profile-picture` (New)**
+    *   Description: Uploads or updates a profile picture for a specific admin user.
+    *   Authentication: Requires JWT Bearer token (with appropriate admin privileges, or user themself).
+    *   Path Parameter: `adminId` - The ID of the admin user.
+    *   Request Body: `multipart/form-data` with a single file field (e.g., `profilePicture`).
+    *   Response (Success 200 OK): `{ "message": "Profile picture updated successfully.", "profile_image_url": "string" }`
+    *   Response (Error 400 Bad Request): If file is missing, wrong type, too large, etc.
+    *   Response (Error 403 Forbidden): If the authenticated user does not have permission.
+    *   Response (Error 404 Not Found): If `adminId` not found.
+
+*   **`DELETE /api/admins/{adminId}/profile-picture` (New)**
+    *   Description: Deletes the profile picture for a specific admin user.
+    *   Authentication: Requires JWT Bearer token (with appropriate admin privileges, or user themself).
+    *   Path Parameter: `adminId` - The ID of the admin user.
+    *   Response (Success 200 OK): `{ "message": "Profile picture deleted successfully." }`
+    *   Response (Error 403 Forbidden): If the authenticated user does not have permission.
+    *   Response (Error 404 Not Found): If `adminId` not found or no picture to delete.
 
 ---
 _This document was last updated on: YYYY-MM-DD_ (Will be replaced by a script or manually at actual update)

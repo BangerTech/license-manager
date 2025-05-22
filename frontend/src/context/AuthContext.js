@@ -49,14 +49,13 @@ export const AuthProvider = ({ children }) => {
     setAuthError(null);
     try {
       const data = await apiLoginUser(credentials);
-      if (data.accessToken) {
-        localStorage.setItem('authToken', data.accessToken);
-        setAuthToken(data.accessToken);
-        const decodedUser = decodeToken(data.accessToken);
-        setUser(decodedUser);
+      if (data.token && data.user) {
+        localStorage.setItem('authToken', data.token);
+        setAuthToken(data.token);
+        setUser(data.user);
         return true;
       } else {
-        setAuthError('Login failed: No access token received.');
+        setAuthError(data.message || 'Login failed: Token or user data missing in response.');
         return false;
       }
     } catch (error) {

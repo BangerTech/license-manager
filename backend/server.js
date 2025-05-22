@@ -5,11 +5,13 @@ const express = require('express');
 const cors = require('cors');
 const db = require('./db'); // Import the database module
 const { authenticateToken, login } = require('./middleware/auth'); // Import auth functions
+const path = require('path'); // Require path module
 
 const projectRoutes = require('./routes/projects'); // Import project routes
 const licenseRoutes = require('./routes/license'); // Import license routes
 const authRoutes = require('./routes/auth'); // Import auth routes
 const notificationRoutes = require('./routes/notifications'); // Import notification routes
+const adminRoutes = require('./routes/admins'); // Import admin routes
 
 const app = express();
 const PORT = process.env.BACKEND_PORT || 4000;
@@ -18,13 +20,16 @@ const PORT = process.env.BACKEND_PORT || 4000;
 app.use(cors()); // Enable CORS for all routes and origins
 app.use(express.json()); // Parse JSON request bodies
 
+// Statically serve uploaded profile pictures
+app.use('/uploads/profile_pictures', express.static(path.join(__dirname, 'uploads/profile_pictures')));
+
 // Basic route
 app.get('/', (req, res) => {
   res.send('License Manager Backend is running! Database connection pending initialization.');
 });
 
 // Auth route
-app.post('/api/auth/login', login);
+// app.post('/api/auth/login', login); // This is redundant, actual login is in authRoutes
 
 // API routes
 // Secure project routes with authentication middleware
@@ -32,7 +37,8 @@ app.use('/api/projects', authenticateToken, projectRoutes);
 // Public license check route (no authentication needed for client apps)
 app.use('/api/license', licenseRoutes);
 app.use('/api/auth', authRoutes); // Use auth routes
-app.use('/api/notifications', notificationRoutes); // Use notification routes
+app.use('/api/notifications', authenticateToken, notificationRoutes); // Secure notification routes
+app.use('/api/admins', adminRoutes); // Use admin routes (already secured internally with authenticateToken and authorizeRole)
 
 // Global error handler (basic example)
 app.use((err, req, res, next) => {

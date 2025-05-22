@@ -104,6 +104,27 @@ export const changePassword = async (passwordData) => {
   return await response.json(); // Should return { message: 'Password changed successfully.' }
 };
 
+// Admin User Management API functions
+export const fetchAdmins = () => {
+  return request('/admins', 'GET');
+};
+
+export const createAdmin = (adminData) => {
+  return request('/admins', 'POST', adminData);
+};
+
+export const updateAdmin = (adminId, adminData) => {
+  return request(`/admins/${adminId}`, 'PUT', adminData);
+};
+
+export const changeAdminPassword = (adminId, passwordData) => {
+  return request(`/admins/${adminId}/password`, 'PUT', passwordData);
+};
+
+export const deleteAdmin = (adminId) => {
+  return request(`/admins/${adminId}`, 'DELETE');
+};
+
 // Notification API functions
 export const fetchNotifications = (params = { limit: 20, offset: 0, unreadOnly: false }) => {
   const queryParams = new URLSearchParams();

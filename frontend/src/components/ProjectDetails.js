@@ -39,7 +39,7 @@ const ProjectDetails = () => {
 
   const formatDate = (dateString) => {
     if (!dateString) return 'N/A';
-    return new Date(dateString).toLocaleLocaleString('en-US', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+    return new Date(dateString).toLocaleString('en-US', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' });
   };
 
   const getStatusInfo = (status) => {
@@ -97,33 +97,29 @@ const ProjectDetails = () => {
       <div className="Status-buttons-container">
         <button 
           onClick={() => handleStatusChange('NOT_PAID')} 
-          className={`not-paid ${selectedProject.license_status === 'NOT_PAID' ? 'current-status' : ''}`}
+          className={`status-button not-paid ${selectedProject.license_status === 'NOT_PAID' ? 'current-status' : ''}`}
           disabled={loading}
         >
           <AlertTriangle size={16}/>Not Paid
         </button>
         <button 
           onClick={() => handleStatusChange('PARTIALLY_PAID')} 
-          className={`partially-paid ${selectedProject.license_status === 'PARTIALLY_PAID' ? 'current-status' : ''}`}
+          className={`status-button partially-paid ${selectedProject.license_status === 'PARTIALLY_PAID' ? 'current-status' : ''}`}
           disabled={loading}
         >
           <Info size={16}/>Partially Paid
         </button>
         <button 
           onClick={() => handleStatusChange('FULLY_PAID')} 
-          className={`fully-paid ${selectedProject.license_status === 'FULLY_PAID' ? 'current-status' : ''}`}
+          className={`status-button fully-paid ${selectedProject.license_status === 'FULLY_PAID' ? 'current-status' : ''}`}
           disabled={loading}
         >
           <CheckCircle size={16}/>Fully Paid
         </button>
-      </div>
-
-      <div className="Form-actions" style={{ marginTop: '30px', justifyContent: 'flex-start' }}>
         <button 
             onClick={() => setViewMode('edit_form', selectedProject)} 
             disabled={loading} 
-            className="edit-button"
-            style={{ backgroundColor: 'var(--btn-secondary-bg)', color: 'var(--btn-secondary-text)'}}
+            className="status-button edit-button"
         >
             <Edit3 size={16}/>Edit Project
         </button>

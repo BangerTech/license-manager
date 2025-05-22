@@ -22,9 +22,24 @@ const authenticateToken = (req, res, next) => {
             console.error('JWT Verification Error:', err.message);
             return res.sendStatus(403); // invalid token
         }
-        req.user = user; // Add user payload to request object
-        next(); // pass the execution to the dramatic response
+        // user payload from JWT should contain id, username, and role
+        req.user = user; 
+        next(); 
     });
+};
+
+// Middleware to authorize based on role
+const authorizeRole = (allowedRoles) => {
+  return (req, res, next) => {
+    if (!req.user || !req.user.role) {
+      // This should ideally not happen if authenticateToken ran correctly
+      return res.status(403).json({ message: 'Forbidden: User role not available.'});
+    }
+    if (!allowedRoles.includes(req.user.role)) {
+      return res.status(403).json({ message: 'Forbidden: You do not have the required role to perform this action.' });
+    }
+    next();
+  };
 };
 
 // Login route handler (to be added to a new auth route file or directly in server.js for simplicity for now)
@@ -42,5 +57,6 @@ const login = (req, res) => {
 
 module.exports = {
     authenticateToken,
+    authorizeRole,
     login
 }; 

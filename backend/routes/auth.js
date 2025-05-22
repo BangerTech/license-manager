@@ -34,7 +34,7 @@ router.post('/login', async (req, res) => {
 
     // User authenticated, create JWT
     const accessToken = jwt.sign(
-      { userId: admin.id, username: admin.username }, 
+      { userId: admin.id, username: admin.username, role: admin.role, profile_image_url: admin.profile_image_url },
       process.env.JWT_SECRET,
       { expiresIn: '1h' } // Token expires in 1 hour, adjust as needed
     );
@@ -43,7 +43,7 @@ router.post('/login', async (req, res) => {
 
     res.json({ 
       token: accessToken,
-      user: { id: admin.id, username: admin.username } // Send back some user info
+      user: { id: admin.id, username: admin.username, role: admin.role, profile_image_url: admin.profile_image_url }
     });
 
   } catch (err) {
